@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+
+  # redis:
+  #   image: redis:alpine
+  #   command: redis-server
+  #   ports:
+  #     - 6379:6379
+  #   volumes:
+  #     - rds_data:/var/lib/redis
+  #     - rds_conf:/usr/local/etc/redis/redis.conf
+  #   environment:
+  #     - REDIS_REPLICATION_MODE=master
+
+  postgres:
+    container_name: shift_pg
+    image: postgres:15.2
+    restart: unless-stopped
+    ports:
+      - 8432:5432
+    env_file:
+      - .env.prod
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+
+  adminer:
+    container_name: shift_admnr
+    image: adminer:latest
+    env_file:
+      - ./.env.prod
+    environment:
+      ADMINER_DEFAULT_SERVER: djdb
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+
+  backend:
+    container_name: shift_fapi
+    build: src/
+    env_file:
+      - .env.prod
+    depends_on:
+      - adminer
+    # restart: always
+    ports:
+      - 8001:8000
+
+  nginx:
+    container_name: shift_nginx
+    image: nginx:1.19.2
+    # restart: unless-stopped
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/site.conf:/etc/nginx/conf.d/site.conf:ro
+
+volumes:
+  pg_data:
+  rds_data:
+  rds_conf:
