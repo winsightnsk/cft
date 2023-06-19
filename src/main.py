@@ -1,4 +1,3 @@
-import os
 from dotenv import load_dotenv
 from src.envloader import DSL
 from src.assignment import TEXT_ASSIGNMENT
