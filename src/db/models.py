@@ -1,4 +1,4 @@
-from src.db.database import dec_base
+from db.database import dec_base
 from sqlalchemy import Column
 from sqlalchemy.sql.sqltypes import Integer, Float
 

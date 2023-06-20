@@ -12,8 +12,8 @@ COPY requirements.txt requirements.txt
 RUN  pip install --upgrade pip \
      && pip install -r requirements.txt --no-cache-dir
 
-COPY . ./src/
+COPY . .
 
-RUN chmod +x ./src/entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
-ENTRYPOINT ["./src/entrypoint.sh"]
+ENTRYPOINT ["./entrypoint.sh"]
