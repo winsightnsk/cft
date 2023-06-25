@@ -1,8 +1,11 @@
 from db.database import dec_base
 from sqlalchemy import Column
-from sqlalchemy.sql.sqltypes import Integer, Float
+from sqlalchemy.sql.sqltypes import Integer, Float, String, DATE
 
 class DbUser(dec_base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True, index=True)
-    fee = Column(Float)
+    username = Column(String)
+    password = Column(String)
+    zp = Column(Float)
+    growdate = Column(DATE)

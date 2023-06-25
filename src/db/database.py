@@ -1,8 +1,10 @@
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from envloader import DSL
 
+load_dotenv()
 dsl = DSL()
 
 DATABASE_URL = "postgresql+psycopg2://{user}:{passw}@{host}:{port}/{dbname}".format(
@@ -15,7 +17,7 @@ DATABASE_URL = "postgresql+psycopg2://{user}:{passw}@{host}:{port}/{dbname}".for
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={'check_thame_thread': False}
+    # connect_args={'check_thame_thread': False}
 )
 
 sessionlocal = sessionmaker(
@@ -32,31 +34,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-
-
-
-
-
-import psycopg2
-from contextlib import contextmanager
-
-
-@contextmanager
-def pg_context(dsl: dict):
-    """
-    Генерация подглючения к Postgres
-
-    Args:
-        dsl (dict): Параметры подключения
-
-    Yields:
-        [Открытое соединение, курсор,]
-    """
-    conn = psycopg2.connect(**dsl)
-    cur = conn.cursor()
-    try:
-        yield [conn, cur,]
-    finally:
-        cur.close()
-        conn.close()

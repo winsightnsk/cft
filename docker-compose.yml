@@ -43,7 +43,6 @@ services:
       - .env.prod
     depends_on:
       - adminer
-    # restart: always
     ports:
       - 8001:8000
 

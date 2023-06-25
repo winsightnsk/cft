@@ -1,11 +1,11 @@
-from dotenv import load_dotenv
 import uvicorn
 from envloader import Env
 from assignment import TEXT_ASSIGNMENT
 from fastapi import FastAPI
+from db import models
+from db.database import engine
 from fastapi.responses import ORJSONResponse
-
-load_dotenv()
+from router.v1 import user
 
 app = FastAPI(
     title='shift_app',
@@ -16,7 +16,11 @@ app = FastAPI(
 
 env: Env = Env()
 
-@app.get("/")
+models.dec_base.metadata.create_all(engine)
+
+app.include_router(user.router)
+
+@app.get("/", tags=['Постановка задачи'])
 def root():
     return TEXT_ASSIGNMENT
 

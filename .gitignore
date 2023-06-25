@@ -1,4 +1,4 @@
 .env
 .env.prod
 venv/
-src/__pycache__
+*/__pycache__/
