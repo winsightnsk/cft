@@ -1,9 +1,13 @@
-from typing import List
-from fastapi import APIRouter, Depends
+from typing import Annotated, List
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from schemas import UserBase, UserDisplay
 from db.database import get_db
 from db import db_user
+from auth.oauth2 import oauth2_scheme, get_user_by_token
+
+# from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
 
 router = APIRouter(
     prefix='/api/v1/user',
@@ -36,7 +40,9 @@ def get_all_user(db: Session = Depends(get_db)):
     return db_user.get_all_users(db)
 
 @router.get('/{id}', response_model=UserDisplay, summary='Пользователь №(id)')
-def get_user(id: int, db: Session = Depends(get_db)):
+def get_user(id: int, token: Annotated[str, Depends(oauth2_scheme)]):  #   , db: Session = Depends(get_db)):
+# def get_user(id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+# def get_user(id: int, db: Session = Depends(get_db), current_user: UserBase = Depends(get_user_by_token)):
     """
     Получение пользователя с заданным id
 
@@ -45,7 +51,10 @@ def get_user(id: int, db: Session = Depends(get_db)):
     Returns:
         Dict: Имя пользователя, Зарплата, Дата повышения
     """
-    return db_user.get_user(db, id)
+    token_user = get_user_by_token(token)
+    if token_user and token_user.id == id:
+        return token_user
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
 @router.post('/{id}/update', response_model=UserDisplay, summary='Внесение изменений')
 def update_user(id: int, request: UserBase, db: Session = Depends(get_db)):
