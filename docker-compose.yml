@@ -10,6 +10,8 @@ services:
       - .env.prod
     volumes:
       - pg_data:/var/lib/postgresql/data/
+    # ports:
+    #   - 8432:5432
 
   adminer:
     container_name: shift_admnr
@@ -34,7 +36,7 @@ services:
   nginx:
     container_name: shift_nginx
     image: nginx:1.19.2
-    # restart: unless-stopped
+    restart: unless-stopped
     ports:
       - 8000:80
     depends_on:
