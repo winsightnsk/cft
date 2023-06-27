@@ -6,13 +6,7 @@ from datetime import date
 import urllib
 
 
-
 endpoint = "http://nginx/api/v1/"
-# data = {"ip": "1.1.2.3"}
-# headers = {"Authorization": "Bearer MYREALLYLONGTOKENIGOT"}
-
-# headers={"WWW-Authenticate": "Bearer"}
-
 
 def test_all():
     # данные для теста
