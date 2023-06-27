@@ -8,6 +8,7 @@ from fastapi.responses import ORJSONResponse
 from router.v1 import user, authentication
 from fastapi.middleware.cors import CORSMiddleware
 
+
 app = FastAPI(
     title='shift_app',
     docs_url='/api/openapi',
@@ -22,9 +23,11 @@ models.dec_base.metadata.create_all(engine)
 app.include_router(user.router)
 app.include_router(authentication.router)
 
+
 @app.get("/", tags=['Постановка задачи'])
 def root():
     return TEXT_ASSIGNMENT
+
 
 app.add_middleware(
     CORSMiddleware,

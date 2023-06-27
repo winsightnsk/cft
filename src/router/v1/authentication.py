@@ -7,10 +7,12 @@ from db.models import DbUser
 from db.hash import Hash
 from auth import oauth2
 
-router =  APIRouter(
+
+router = APIRouter(
     prefix='/api/v1/auth',
     tags=['Авторизация'],
 )
+
 
 @router.post('/token')
 def get_token(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):

@@ -7,18 +7,20 @@ from schemas import UserBase
 
 def create_user(db: Session, request: UserBase):
     new_user = DbUser(
-        username = request.username,
-        password = Hash.bcrypt(request.password),
-        zp = request.zp,
-        growdate = request.growdate,
+        username=request.username,
+        password=Hash.bcrypt(request.password),
+        zp=request.zp,
+        growdate=request.growdate,
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     return new_user
 
+
 def get_all_users(db: Session):
     return db.query(DbUser).all()
+
 
 def get_user(db: Session, id: int):
     user = db.query(DbUser).filter(DbUser.id == id).first()
@@ -29,14 +31,6 @@ def get_user(db: Session, id: int):
         )
     return user
 
-# def get_user_by_username(db: Session, username: str):
-#     user = db.query(DbUser).filter(DbUser.username == username).first()
-#     if not user:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail=f'Пользователь {username} не найден',
-#         )
-#     return user
 
 def update_user(db: Session, id: int, request: UserBase):
     user = db.query(DbUser).filter(DbUser.id == id)
@@ -55,6 +49,7 @@ def update_user(db: Session, id: int, request: UserBase):
     res = user.first()
     db.refresh(res)
     return res
+
 
 def delete_user(db: Session, id: int):
     user = db.query(DbUser).filter(DbUser.id == id).first()

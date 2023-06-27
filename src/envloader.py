@@ -1,5 +1,6 @@
 from pydantic import BaseSettings, Field
 
+
 class DSL(BaseSettings):
     dbname: str = Field(env='POSTGRES_DB')
     user: str = Field(env='POSTGRES_USER')
@@ -9,5 +10,8 @@ class DSL(BaseSettings):
     options: str = '-c search_path=content'
     connect_timeout: int = 3
 
+
 class Env(BaseSettings):
     debug: bool = Field(env='DEBUG') == 'True'
+    secretkey: str = Field(env='SECRET_KEY')
+    tokendelta: int = Field(env='ACCESS_TOKEN_EXPIRE_MINUTES')
