@@ -5,8 +5,7 @@ from fastapi import FastAPI
 from db import models
 from db.database import engine
 from fastapi.responses import ORJSONResponse
-from router.v1 import user
-from auth import authentication
+from router.v1 import user, authentication
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(

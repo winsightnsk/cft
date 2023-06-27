@@ -15,16 +15,9 @@ DATABASE_URL = "postgresql+psycopg2://{user}:{passw}@{host}:{port}/{dbname}".for
     dbname=dsl.dbname,
 )
 
-engine = create_engine(
-    DATABASE_URL,
-    # connect_args={'check_thame_thread': False}
-)
+engine = create_engine(DATABASE_URL)
 
-sessionlocal = sessionmaker(
-    autoflush=False,
-    autocommit=False,
-    bind=engine,
-)
+sessionlocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)
 
 dec_base = declarative_base()
 
